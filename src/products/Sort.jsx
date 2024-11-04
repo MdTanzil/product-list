@@ -1,4 +1,22 @@
+import { useContext, useState } from "react";
+import { ProductContext } from "../context";
+
 const Sort = () => {
+  const [showSort, setShowSort] = useState();
+  const { products, setProducts, loading, setLoading } =
+    useContext(ProductContext);
+
+  // sort by price
+  const handleSortByPrice = (sortBy) => {
+    if (sortBy === "asc") {
+      setShowSort(false);
+      setProducts([...products].sort((a, b) => a.price - b.price));
+    } else {
+      setShowSort(false);
+      setProducts([...products].sort((a, b) => b.price - a.price));
+    }
+  };
+
   return (
     <div className="relative inline-block text-left">
       <div>
@@ -8,6 +26,7 @@ const Sort = () => {
           id="menu-button"
           aria-expanded="true"
           aria-haspopup="true"
+          onClick={() => setShowSort(!showSort)}
         >
           Sort
           <svg
@@ -25,35 +44,37 @@ const Sort = () => {
         </button>
       </div>
       {/* Sort Options */}
-      <div
-        className="absolute z-10 mt-2 left-5 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="menu-button"
-        tabIndex={-1}
-      >
-        <div className="py-1" role="none">
-          <span
-            className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
-            role="menuitem"
-            tabIndex={-1}
-            onclick="toggleDropdown()"
-            id="menu-item-0"
-          >
-            Low to High
-          </span>
-          <span
-            href
-            className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
-            role="menuitem"
-            tabIndex={-1}
-            onclick="toggleDropdown()"
-            id="menu-item-0"
-          >
-            High to Low
-          </span>
+      {showSort && (
+        <div
+          className="absolute z-10 mt-2 left-5 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
+          tabIndex={-1}
+        >
+          <div className="py-1" role="none">
+            <span
+              className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
+              role="menuitem"
+              tabIndex={-1}
+              onClick={() => handleSortByPrice("asc")}
+              id="menu-item-0"
+            >
+              Low to High
+            </span>
+            <span
+              href
+              className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
+              role="menuitem"
+              tabIndex={-1}
+              id="menu-item-0"
+              onClick={() => handleSortByPrice("")}
+            >
+              High to Low
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

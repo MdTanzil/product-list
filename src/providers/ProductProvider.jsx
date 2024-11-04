@@ -5,6 +5,7 @@ const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [category, setCategory] = useState([]);
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
