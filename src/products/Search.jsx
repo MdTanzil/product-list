@@ -1,10 +1,15 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ProductContext } from "../context";
 
 const Search = () => {
   const [search, setSearch] = useState("");
   const { products, setProducts } = useContext(ProductContext);
   const pref = useRef([]);
+  const debounceTimeout = useRef(null);
+
+  if (debounceTimeout.current) {
+    clearTimeout(debounceTimeout.current);
+  }
   useEffect(() => {
     if (pref.current.length === 0 && products.length > 0) {
       pref.current = [...products];
@@ -13,19 +18,28 @@ const Search = () => {
   }, [products]);
 
   useEffect(() => {
-    if (search.length == 0) {
-      if (products !== pref.current) {
-        setProducts(pref.current);
-      }
-      // console.log(products);
-    } else {
-      // console.log(products);
-      const filtered = (pref.current || []).filter((product) =>
-        product.title.toLowerCase().includes(search.toLowerCase())
-      );
-      setProducts(filtered);
+    // Clear previous timeout if it exists
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
     }
-  }, [products, search, setProducts]);
+    debounceTimeout.current = setTimeout(() => {
+      if (search.length == 0) {
+        if (products !== pref.current) {
+          setProducts(pref.current);
+        }
+        // console.log(products);
+      } else {
+        // console.log(products);
+        const filtered = (pref.current || []).filter((product) =>
+          product.title.toLowerCase().includes(search.toLowerCase())
+        );
+        console.log(filtered);
+
+        setProducts(filtered);
+      }
+    }, [300]);
+    return () => clearTimeout(debounceTimeout.current);
+  }, [search]);
 
   return (
     <div className="flex flex-1 items-center px-3.5 py-2 text-gray-400 group hover:ring-1 hover:ring-gray-300 focus-within:!ring-2 ring-inset focus-within:!ring-teal-500 rounded-md">

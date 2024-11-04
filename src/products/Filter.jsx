@@ -7,8 +7,6 @@ const Filter = () => {
   const { category, setProducts, setLoading, setError } =
     useContext(ProductContext);
   useEffect(() => {
-    console.log();
-
     setLoading(true);
     fetch(`https://fakestoreapi.com/products/category/${selectedCategory}`)
       .then((res) => res.json())
@@ -18,6 +16,7 @@ const Filter = () => {
         setError(null);
       })
       .then((err) => setError(err.massage));
+    setShowFilter(false);
   }, [selectedCategory]);
   return (
     <div className="relative inline-block text-left">
