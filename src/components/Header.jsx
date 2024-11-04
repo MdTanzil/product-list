@@ -1,3 +1,4 @@
+import logo from "../assets/logo.svg";
 const Header = () => {
   return (
     <header className="relative bg-white">
@@ -33,7 +34,7 @@ const Header = () => {
             <div className="ml-4 flex lg:ml-0">
               <a href="#">
                 <span className="sr-only">Your Company</span>
-                <img className="h-8 w-auto" src="./assets/logo.svg" alt />
+                <img className="h-8 w-auto" src={logo} alt />
               </a>
             </div>
             {/* Flyout menus */}
@@ -98,11 +99,6 @@ const Header = () => {
                   href="#"
                   className="flex items-center text-gray-700 hover:text-gray-800"
                 >
-                  <img
-                    src="https://tailwindui.com/img/flags/flag-canada.svg"
-                    alt
-                    className="block h-auto w-5 flex-shrink-0"
-                  />
                   <span className="ml-3 block text-sm font-medium">CAD</span>
                   <span className="sr-only">, change currency</span>
                 </a>
