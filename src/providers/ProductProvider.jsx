@@ -8,16 +8,27 @@ const ProductProvider = ({ children }) => {
   const [error, setError] = useState("");
   const [category, setCategory] = useState([]);
   useEffect(() => {
+    setLoading(true);
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
-      .then((json) => setProducts(json))
-      .catch((error) => setError(error.message));
+      .then((json) => {
+        setProducts(json);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     fetch("https://fakestoreapi.com/products/categories")
       .then((res) => res.json())
-      .then((json) => setCategory(json));
+      .then((json) => {
+        setCategory(json);
+        setLoading(false);
+      });
   }, []);
 
   return (

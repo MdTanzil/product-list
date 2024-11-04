@@ -2,14 +2,26 @@ import { useContext } from "react";
 import { ProductContext } from "../context";
 import Cart from "./Cart";
 import Filter from "./Filter";
-import LoadingCard from "./LoadingCard";
+import LoadingList from "./LoadingList";
 import PageHeading from "./PageHeading";
 import ProductCard from "./ProductCard";
 import Search from "./Search";
 import Sort from "./Sort";
 
 const ProductPage = () => {
-  const { products } = useContext(ProductContext);
+  const { products, loading } = useContext(ProductContext);
+  let content;
+  if (loading) {
+    content = <LoadingList />;
+  }
+  if (products.length == 0) {
+    content = <p className="text-center text-gray-500">No products found.</p>;
+  }
+  if (!loading && products.length > 0) {
+    content = products.map((product) => (
+      <ProductCard key={product.id} {...product} />
+    ));
+  }
   return (
     <div>
       <div className="pt-16 sm:pt-24 lg:pt-40">
@@ -39,17 +51,7 @@ const ProductPage = () => {
             <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8">
               <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                 {/* Card */}
-                {products.length === 0 ? (
-                  <p className="text-center text-gray-500">
-                    No products found. Please try a different search.
-                  </p>
-                ) : (
-                  products.map((product) => (
-                    <ProductCard key={product.id} {...product} />
-                  ))
-                )}
-
-                <LoadingCard />
+                {content}
 
                 {/* More products... */}
               </div>
