@@ -7,6 +7,8 @@ const ProductProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [category, setCategory] = useState([]);
+  const [cart, setCart] = useState([]);
+
   useEffect(() => {
     setLoading(true);
     fetch("https://fakestoreapi.com/products")
@@ -41,6 +43,8 @@ const ProductProvider = ({ children }) => {
         error,
         setError,
         category,
+        cart,
+        setCart,
       }}
     >
       {children}
